@@ -1,6 +1,23 @@
+from collections import defaultdict
+
 def most_varied(recipes):
-  # Write your solution here!
-  pass
+    # Write your solution here!
+    unique_ing_dict= defaultdict(set)
+
+    for item in recipes: # O(n)
+        unique_ing_dict[item[1]].update(set(item[2]))
+    
+    
+    sorted_recipes = sorted(unique_ing_dict.items(), key=lambda item: len(item[1]), reverse=True) # o(mlog(m)) m:max ingrid counts
+
+    top_two = sorted_recipes[:2]
+    output = []
+
+    for item in top_two: # item is a tuple(chef, unique ingrd) 
+        output_item = (item[0],sorted(list(item[1]))) 
+        output.append(output_item)
+    
+    return output
 
 
 recipes_1 = [
@@ -12,6 +29,8 @@ recipes_1 = [
     ("Latkes", "Hallie", ("Potato", "Oil")),
     ("Pea Soup", "Xinting", ("Peas", "Onion", "Carrot", "Chicken Stock")),
 ]
+print(most_varied(recipes_1))
+
 assert most_varied(recipes_1) == [
     ("Xinting", ["Beef", "Carrot", "Chicken Stock", "Onion", "Peas", "Tomato"]), 
     ("Amy", ["Cheese", "Chicken Cream", "Pepper", "Tater tots"])
